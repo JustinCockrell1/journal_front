@@ -5,6 +5,7 @@ import API from "../constants/API";
 const Dashboard = props => {
 
     const [day, setDay] = useState({tasks:[{name:"Math", status:"neutral"}]});
+    const [newTask, setNewTask] = useState("");
 
     const startTask = (name) =>{
         const timestamp = Date.now();
@@ -22,11 +23,21 @@ const Dashboard = props => {
         .then(data=>console.log(data));
     }
 
+    const addTask = function() {
+
+        setDay(current=>{return {...current, tasks:[...current.tasks, {name:newTask, status:"neutral"}]}});
+        console.log(day);
+        setNewTask("");
+    }
+
     return (
+    
         <div className="dashboard-container">
         <div className="tasks-container">
-            <input placeholder="task name"></input>
-            <button>Add Task</button>
+        <div className="add-task">
+            <input placeholder="task name" value={newTask} onChange={(e)=>{setNewTask(e.target.value);}}></input>
+            <button onClick={addTask}>Add Task</button>
+            </div>
             {day.tasks.map((task,index)=>{
                 return <Task key={index} task={task} start={startTask}></Task>
             })}
